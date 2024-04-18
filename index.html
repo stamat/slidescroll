@@ -1,0 +1,111 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Slidescroll - ES6 minimal slider</title>
+    <meta name="description" content="A minimal ES6 module slider based on scrollIntoView">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- <link rel="icon" type="image/png" href="https://i.imgur.com/vqrs5bD.png"> -->
+
+    
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Libre+Caslon+Display&display=swap" as="style">
+
+    <style>
+      html, body {
+        font-family: 'Lato', sans-serif;
+        color: #1d1d1d;
+        padding: 0px;
+        margin: 0px;
+      }
+
+      .serif {
+        font-family: 'Libre Caslon Display', serif;
+      }
+
+      .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 56px;
+      }
+
+      .py-16 {
+        padding-top: 16px;
+        padding-bottom: 16px;
+      }
+
+      .github-buttons {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 16px;
+      }
+
+      @media screen and (max-width: 959px) {
+        .container {
+          padding: 0 16px;
+        }
+      }
+    </style>
+
+    <link rel="stylesheet" href="dist/slidescroll.css">
+    <script type="text/javascript" src="dist/slidescroll.js"></script>
+  </head>
+  <body>
+    <div class="container py-16">
+      <main class="container">
+        <div class="github-buttons">
+          <a class="github-button" href="https://github.com/stamat/slidescroll" data-size="large" aria-label="Download stamat/slidescroll on GitHub">View on GitHub</a>
+        </div>
+        <h1>slidescroll</h1>
+        
+        <div id="slider-controls-1" class="slidescroll-controls" style="margin-bottom: 24px;">
+          <button class="js-slidescroll-prev">Prev</button>
+          <button class="js-slidescroll-next">Next</button>
+        </div>
+        <div id="slidescroll-1" class="slidescroll">
+          <div class="slidescroll-slides">
+            <div class="slidescroll-slide">
+              <h2>Slide 1</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nunc aliquet nunc, nec al</p>
+            </div>
+            <div class="slidescroll-slide">
+              <h2>Slide 2</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nunc aliquet nunc, nec al</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nunc aliquet nunc, nec al</p>
+            </div>
+            <div class="slidescroll-slide">
+              <img src="https://i.imgur.com/xChSYLN.jpg" width="450" height="554" loading="lazy" alt="Slide 3" style="max-width: 100%; height: auto;">
+            </div>
+            <div class="slidescroll-slide">
+              <img src="https://i.imgur.com/XkOJobu.png" class="js-slidescroll-image" loading="lazy" alt="Slide 4" style="max-width: 100%; height: auto;">
+            </div>
+            <div class="slidescroll-slide">
+              <img src="https://i.imgur.com/gJV54Fl.png" class="js-slidescroll-image" loading="lazy" alt="Slide 5" style="max-width: 100%; height: auto;">
+            </div>
+          </div>
+        </div>
+
+        <h2>Installation</h2>
+        <p>Install via npm:</p>
+        <pre><code class="language-bash">npm install slidescroll</code></pre>
+        <button class="js-add-slidescroll" data-index="0">Add</button>
+        <button class="js-remove-slidescroll" data-index="0">Remove</button>
+      </main>
+    </div>
+    <script type="text/javascript">
+      const slider = new Slidescroll('#slidescroll-1', {
+        next: '#slider-controls-1 .js-slidescroll-next',
+        prev: '#slider-controls-1 .js-slidescroll-prev',
+        infinite: true
+      });
+    </script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>document.write('<script src="http://'
+      + (location.host || 'localhost').split(':')[0]
+      + ':35729/livereload.js?snipver=1"></'
+      + 'script>')</script>
+  </body>
+</html>

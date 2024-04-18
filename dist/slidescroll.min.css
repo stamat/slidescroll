@@ -1,0 +1,2 @@
+/* slideswap v1.0.0 | https://stamat.github.io/slideswap/ | MIT License */
+.slidescroll{overflow:auto}.slidescroll-slides{display:flex;flex-flow:row nowrap}.slidescroll-slide{flex:0 0 auto;touch-action:pan-x pan-y}

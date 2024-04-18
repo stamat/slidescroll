@@ -1,0 +1,34 @@
+{
+  "scripts": [{
+    "in": "build/iife.js",
+    "out": "dist/slidescroll.js",
+    "options": {
+      "sourcemap": true,
+      "minify": true,
+      "format": "iife",
+      "target": "es2019"
+    }
+  }],
+  "styles": [{
+    "in": "slidescroll.scss",
+    "out": "dist/slidescroll.css",
+    "options": {
+      "minify": true,
+      "sourcemap": true
+    }
+  }],
+  "banner": "/* {{ name }} v{{ version }} | {{ homepage }} | {{ license }} License */",
+  "serve" : {
+    "port": 4040,
+    "base": "/"
+  },
+  "livereload": true,
+  "watch": [
+    "slidescroll.js",
+    "slidescroll.scss",
+    "index.html"
+  ],
+  "includePaths": [
+    "node_modules"
+  ]
+}

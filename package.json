@@ -1,0 +1,40 @@
+{
+  "name": "slidescroll",
+  "version": "1.0.0",
+  "description": "A minimal ES6 module slider based on scrollIntoView.",
+  "main": "slidescroll.js",
+  "style": "slidescroll.scss",
+  "homepage": "https://stamat.github.io/slidescroll/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stamat/slidescroll.git"
+  },
+  "keywords": [
+    "slide",
+    "rotator",
+    "swap",
+    "slides",
+    "slideshow",
+    "javascript",
+    "esm",
+    "es6",
+    "iife",
+    "rotation"
+  ],
+  "author": "Nikola Stamatovic <@stamat>",
+  "contributors": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stamat/slidescroll/issues"
+  },
+  "scripts": {
+    "dev": "poops",
+    "build": "poops -b"
+  },
+  "devDependencies": {
+    "poops": "^1.0.18"
+  },
+  "dependencies": {
+    "book-of-spells": "^1.0.22"
+  }
+}
