@@ -44,6 +44,7 @@ export default class Slidescroll {
 
     this.track = this.element.querySelector(this.options.trackSelector)
     this.slides = Array.from(this.track.querySelectorAll(this.options.slideSelector))
+    this.element.setAttribute('data-slidescroll-initialized', 'true')
     this.enumerateSlides()
     this.bindControls()
     this.setInitialSlide(this.options.start)
