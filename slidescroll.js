@@ -47,6 +47,14 @@ export default class Slidescroll {
     this.enumerateSlides()
     this.bindControls()
     this.setInitialSlide(this.options.start)
+
+    let scrollTimeout = null;
+    this.element.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+          this.dispatchEvent('scrollstop');
+      }, 150);
+    });
     
     /**
      * @event Slidescroll#init

@@ -111,6 +111,15 @@
         prev: '#slider-controls-1 .js-slidescroll-prev',
         infinite: true
       });
+
+      slider.element.addEventListener('slidescroll:change', (event) => {
+        console.log('slidescroll:change', event.detail);
+      });
+
+      slider.element.addEventListener('slidescroll:scrollstop', (event) => {
+        console.log('slidescroll:scrollstop', event.detail);
+      });
+
     </script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
