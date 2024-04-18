@@ -12,6 +12,7 @@ export default class Slidescroll {
   init(element, options) {
     this.element = element
     this.currentIndex = 0
+    this.visibility = []
     this.options = {
       start: 0,
       loop: true,
@@ -47,15 +48,32 @@ export default class Slidescroll {
     this.element.setAttribute('data-slidescroll-initialized', 'true')
     this.enumerateSlides()
     this.bindControls()
-    this.setInitialSlide(this.options.start)
+    if (this.options.start) this.setInitialSlide(this.options.start)
+    if (!this.options.start) this.calculateSlideVisibility()
 
-    let scrollTimeout = null;
+    let scrollTimeout = null, 
+        lastScrollTop = 0, 
+        lastScrollLeft = 0, 
+        scrollDirection = 'forward'
+
     this.element.addEventListener('scroll', () => {
+      let st = this.element.scrollTop
+      let sl = this.element.scrollLeft
+
+      if (st !== lastScrollTop){
+        scrollDirection = st > lastScrollTop ? 'forward' : 'backward'
+      } else if (sl !== lastScrollLeft) {
+        scrollDirection = sl > lastScrollLeft ? 'forward' : 'backward'
+      }
+
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
-          this.dispatchEvent('scrollstop');
-      }, 150);
-    });
+        this.calculateSlideVisibility()
+        console.log(this.visibility, this.getLastVisibleSlide())
+        this.goTo(this.getLastVisibleSlide().index)
+        this.dispatchEvent('scrollstop', { direction: scrollDirection })
+      }, 150)
+    })
     
     /**
      * @event Slidescroll#init
@@ -68,6 +86,35 @@ export default class Slidescroll {
      * })
      */
     this.dispatchEvent('init')
+  }
+
+  calculateSlideVisibility() {
+    const containerRect = this.element.getBoundingClientRect();
+    
+    this.slides.forEach((slide, index) => {
+      const rect = slide.getBoundingClientRect();
+
+      if (rect.bottom < containerRect.top || rect.top > containerRect.bottom || rect.right < containerRect.left || rect.left > containerRect.right) {
+        this.visibility[index] = 0
+        return
+      }
+
+      const vVisible = Math.max(0, Math.min(rect.bottom, containerRect.bottom) - Math.max(rect.top, containerRect.top))
+      const hVisible = Math.max(0, Math.min(rect.right, containerRect.right) - Math.max(rect.left, containerRect.left))
+
+      const vHeight = rect.bottom - rect.top
+      const hWidth = rect.right - rect.left
+
+      const visibleArea = vVisible * hVisible
+      const totalArea = vHeight * hWidth
+      this.visibility[index] = (visibleArea / totalArea) * 100;
+    })
+  }
+
+  getLastVisibleSlide() {
+    return this.visibility.reduce((acc, visibility, index) => {
+      return visibility > acc.visibility ? { index, visibility } : acc
+    }, { index: 0, visibility: 0 })
   }
 
   setInitialSlide() {
