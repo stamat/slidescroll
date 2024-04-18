@@ -3,7 +3,7 @@
   overflow: auto;
 }
 
-.slidescroll-slides {
+.slidescroll-track {
   display: flex;
   flex-flow: row nowrap;
 }

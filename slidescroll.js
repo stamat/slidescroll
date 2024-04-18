@@ -11,9 +11,21 @@ export default class Slidescroll {
 
   init(element, options) {
     this.element = element
+    this.currentIndex = 0
     this.options = {
-      
+      start: 0,
+      loop: true,
+      behavior: 'smooth',
+      alignment: 'start',
+      activeClass: 'slidescroll-current-slide',
+      trackSelector: '.slidescroll-track',
+      slideSelector: ':scope > *',
+      next: null,
+      prev: null,
     }
+
+    this.slides = []
+    this.track = null
 
     if (typeof element === 'string') this.element = document.querySelector(element)
 
@@ -29,6 +41,12 @@ export default class Slidescroll {
       this.options,
       options
     )
+
+    this.track = this.element.querySelector(this.options.trackSelector)
+    this.slides = Array.from(this.track.querySelectorAll(this.options.slideSelector))
+    this.enumerateSlides()
+    this.bindControls()
+    this.setInitialSlide(this.options.start)
     
     /**
      * @event Slidescroll#init
@@ -41,6 +59,68 @@ export default class Slidescroll {
      * })
      */
     this.dispatchEvent('init')
+  }
+
+  setInitialSlide() {
+    const slide = this.slides[this.options.start]
+    if (!slide) return
+    slide.scrollIntoView({ behavior: 'instant', block: this.options.alignment, inline: this.options.alignment })
+  }
+
+  bindControls() {
+    if (!this.options.next && !this.options.prev) return
+    this.options.next = typeof this.options.next === 'string' ? document.querySelector(this.options.next) : this.options.next
+    this.options.prev = typeof this.options.prev === 'string' ? document.querySelector(this.options.prev) : this.options.prev
+
+    if (this.options.next) this.options.next.addEventListener('click', this.next.bind(this))
+    if (this.options.prev) this.options.prev.addEventListener('click', this.prev.bind(this))
+  }
+
+  enumerateSlides(slides = this.slides) {
+    slides.forEach((slide, index) => {
+      slide.setAttribute('data-slidescroll-index', index)
+    })
+  }
+
+  isScrollable() {
+    return this.isVertical() || this.isHorizontal()
+  }
+
+  isVertical() {
+    return this.track.scrollHeight > this.track.clientHeight
+  }
+
+  isHorizontal() {
+    return this.track.scrollWidth > this.track.clientWidth
+  }
+
+  goTo(index) {
+    if (this.options.loop) {
+      index = index < 0 ? this.slides.length - 1 : index
+      index = index >= this.slides.length ? 0 : index
+    }
+    const slide = this.slides[index]
+    if (!slide) return
+    this.setActiveSlide(index)
+    this.currentIndex = index
+    slide.scrollIntoView({ behavior: this.options.behavior, block: this.options.alignment, inline: this.options.alignment })
+    this.dispatchEvent('change', { index })
+  }
+
+  next() {
+    const index = this.currentIndex + 1
+    this.goTo(index)
+  }
+
+  prev() {
+    const index = this.currentIndex - 1
+    this.goTo(index)
+  }
+
+  setActiveSlide(index) {
+    this.slides.forEach((slide, i) => {
+      slide.classList.toggle(this.options.activeClass, i === index)
+    })
   }
 
   dispatchEvent(type, options = {}) {

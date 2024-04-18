@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!-- <link rel="icon" type="image/png" href="https://i.imgur.com/vqrs5bD.png"> -->
 
-    
     <link rel="preload" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Libre+Caslon+Display&display=swap" as="style">
 
     <style>
@@ -41,6 +40,25 @@
         padding: 16px;
       }
 
+      .demo-slide {
+        width: 80%;
+        height: 200px;
+        background-color: aquamarine;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 64px;
+        color: white;
+        margin: 0 16px;
+      }
+
+      .demo-slide:first-of-type {
+        margin-left: 0;
+      }
+      .demo-slide:last-of-type {
+        margin-right: 0;
+      }
+
       @media screen and (max-width: 959px) {
         .container {
           padding: 0 16px;
@@ -64,24 +82,18 @@
           <button class="js-slidescroll-next">Next</button>
         </div>
         <div id="slidescroll-1" class="slidescroll">
-          <div class="slidescroll-slides">
-            <div class="slidescroll-slide">
-              <h2>Slide 1</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nunc aliquet nunc, nec al</p>
+          <div class="slidescroll-track">
+            <div class="demo-slide slidescroll-slide" style="background-color: hotpink">
+              1
             </div>
-            <div class="slidescroll-slide">
-              <h2>Slide 2</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nunc aliquet nunc, nec al</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget aliquam ultricies, nunc nunc aliquet nunc, nec al</p>
+            <div class="demo-slide slidescroll-slide" style="background-color: blueviolet">
+              2
             </div>
-            <div class="slidescroll-slide">
-              <img src="https://i.imgur.com/xChSYLN.jpg" width="450" height="554" loading="lazy" alt="Slide 3" style="max-width: 100%; height: auto;">
+            <div class="demo-slide slidescroll-slide" style="background-color:cornflowerblue">
+              3
             </div>
-            <div class="slidescroll-slide">
-              <img src="https://i.imgur.com/XkOJobu.png" class="js-slidescroll-image" loading="lazy" alt="Slide 4" style="max-width: 100%; height: auto;">
-            </div>
-            <div class="slidescroll-slide">
-              <img src="https://i.imgur.com/gJV54Fl.png" class="js-slidescroll-image" loading="lazy" alt="Slide 5" style="max-width: 100%; height: auto;">
+            <div class="demo-slide slidescroll-slide" style="background-color: crimson">
+              4
             </div>
           </div>
         </div>
