@@ -8,6 +8,10 @@
   flex-flow: row nowrap;
 }
 
+.slidescroll.vertical .slidescroll-track {
+  flex-flow: column nowrap;
+}
+
 .slidescroll-slide {
   flex: 0 0 auto;
   touch-action: pan-x pan-y;

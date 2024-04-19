@@ -21,6 +21,7 @@ export default class Slidescroll {
       activeClass: 'slidescroll-current-slide',
       trackSelector: '.slidescroll-track',
       slideSelector: ':scope > *',
+      autoGoTo: true,
       next: null,
       prev: null,
     }
@@ -56,10 +57,13 @@ export default class Slidescroll {
         lastScrollTop = 0, 
         lastScrollLeft = 0, 
         scrollDirection = 'forward'
-
+    
     this.element.addEventListener('scroll', () => {
       let st = this.element.scrollTop
       let sl = this.element.scrollLeft
+      if (st < 0) st = 0
+      if (sl < 0) sl = 0
+      //TODO: bounce and bottom scroll disable
 
       if (st !== lastScrollTop){
         scrollDirection = st > lastScrollTop ? 'forward' : 'backward'
@@ -77,9 +81,8 @@ export default class Slidescroll {
       lastScrollLeft = sl
     })
 
-
     //goTo scroll stop event listener
-    this.element.addEventListener('slidescroll:scrollstop', () => {
+    if (this.options.autoGoTo) this.element.addEventListener('slidescroll:scrollstop', () => {
       if (this.isScrollingTo) {
         this.isScrollingTo = false
         return

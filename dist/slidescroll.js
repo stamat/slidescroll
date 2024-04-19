@@ -25,6 +25,7 @@
         activeClass: "slidescroll-current-slide",
         trackSelector: ".slidescroll-track",
         slideSelector: ":scope > *",
+        autoGoTo: true,
         next: null,
         prev: null
       };
@@ -56,6 +57,10 @@
       this.element.addEventListener("scroll", () => {
         let st = this.element.scrollTop;
         let sl = this.element.scrollLeft;
+        if (st < 0)
+          st = 0;
+        if (sl < 0)
+          sl = 0;
         if (st !== lastScrollTop) {
           scrollDirection = st > lastScrollTop ? "forward" : "backward";
         } else if (sl !== lastScrollLeft) {
@@ -71,17 +76,18 @@
         lastScrollTop = st;
         lastScrollLeft = sl;
       });
-      this.element.addEventListener("slidescroll:scrollstop", () => {
-        if (this.isScrollingTo) {
-          this.isScrollingTo = false;
-          return;
-        }
-        this.calculateSlideVisibility();
-        const lastVisibleSlide = this.getLastVisibleSlide(scrollDirection);
-        if (lastVisibleSlide === void 0)
-          return;
-        this.goTo(lastVisibleSlide);
-      });
+      if (this.options.autoGoTo)
+        this.element.addEventListener("slidescroll:scrollstop", () => {
+          if (this.isScrollingTo) {
+            this.isScrollingTo = false;
+            return;
+          }
+          this.calculateSlideVisibility();
+          const lastVisibleSlide = this.getLastVisibleSlide(scrollDirection);
+          if (lastVisibleSlide === void 0)
+            return;
+          this.goTo(lastVisibleSlide);
+        });
       this.dispatchEvent("init");
     }
     calculateSlideVisibility() {
