@@ -1,4 +1,4 @@
-/* slideswap v1.0.0 | https://stamat.github.io/slideswap/ | MIT License */
+/* slidescroll v1.0.0 | https://stamat.github.io/slidescroll/ | MIT License */
 (() => {
   // node_modules/book-of-spells/src/helpers.mjs
   function shallowMerge(target, source) {
