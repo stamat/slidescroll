@@ -21,7 +21,7 @@ export default class Slidescroll {
       activeClass: 'slidescroll-current-slide',
       trackSelector: '.slidescroll-track',
       slideSelector: ':scope > *',
-      autoGoTo: true,
+      autoGoTo: false,
       next: null,
       prev: null,
     }

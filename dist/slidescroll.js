@@ -25,7 +25,7 @@
         activeClass: "slidescroll-current-slide",
         trackSelector: ".slidescroll-track",
         slideSelector: ":scope > *",
-        autoGoTo: true,
+        autoGoTo: false,
         next: null,
         prev: null
       };
