@@ -10,16 +10,14 @@
     "url": "https://github.com/stamat/slidescroll.git"
   },
   "keywords": [
-    "slide",
-    "rotator",
-    "swap",
+    "slider",
+    "scroll",
     "slides",
-    "slideshow",
+    "slider-component",
     "javascript",
     "esm",
     "es6",
-    "iife",
-    "rotation"
+    "iife"
   ],
   "author": "Nikola Stamatovic <@stamat>",
   "contributors": [],
