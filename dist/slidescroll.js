@@ -30,6 +30,7 @@
       };
       this.slides = [];
       this.track = null;
+      this.isScrollingTo = false;
       if (typeof element === "string")
         this.element = document.querySelector(element);
       if (!this.element || !(this.element instanceof HTMLElement)) {
@@ -60,13 +61,26 @@
         } else if (sl !== lastScrollLeft) {
           scrollDirection = sl > lastScrollLeft ? "forward" : "backward";
         }
-        clearTimeout(scrollTimeout);
+        if (scrollTimeout)
+          clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
-          this.calculateSlideVisibility();
-          console.log(this.visibility, this.getLastVisibleSlide());
-          this.goTo(this.getLastVisibleSlide().index);
+          if (lastScrollLeft !== sl || lastScrollTop !== st)
+            return;
           this.dispatchEvent("scrollstop", { direction: scrollDirection });
-        }, 150);
+        }, 100);
+        lastScrollTop = st;
+        lastScrollLeft = sl;
+      });
+      this.element.addEventListener("slidescroll:scrollstop", () => {
+        if (this.isScrollingTo) {
+          this.isScrollingTo = false;
+          return;
+        }
+        this.calculateSlideVisibility();
+        const lastVisibleSlide = this.getLastVisibleSlide(scrollDirection);
+        if (lastVisibleSlide === void 0)
+          return;
+        this.goTo(lastVisibleSlide);
       });
       this.dispatchEvent("init");
     }
@@ -87,10 +101,16 @@
         this.visibility[index] = visibleArea / totalArea * 100;
       });
     }
-    getLastVisibleSlide() {
-      return this.visibility.reduce((acc, visibility, index) => {
-        return visibility > acc.visibility ? { index, visibility } : acc;
-      }, { index: 0, visibility: 0 });
+    getLastVisibleSlide(direction) {
+      if (!this.visibility.length)
+        return;
+      if (direction === "backward") {
+        return this.visibility.findIndex((v) => v > 0);
+      }
+      for (let i = this.visibility.length - 1; i >= 0; i--) {
+        if (this.visibility[i] > 0)
+          return i;
+      }
     }
     setInitialSlide() {
       const slide = this.slides[this.options.start];
@@ -132,6 +152,7 @@
         return;
       this.setActiveSlide(index);
       this.currentIndex = index;
+      this.isScrollingTo = true;
       slide.scrollIntoView({ behavior: this.options.behavior, block: this.options.alignment, inline: this.options.alignment });
       this.dispatchEvent("change", { index });
     }
