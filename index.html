@@ -86,8 +86,7 @@
         <h1>slidescroll</h1>
 
         <div class="archive-banner" role="note">
-          <strong>Archived.</strong> The 2024 successor to
-          <a href="https://github.com/stamat/slidekick">slidekick</a>, superseded in 2026 by
+          <strong>Archived.</strong> Superseded in 2026 by
           <a href="https://github.com/stamat/book-of-elementals#carousel-elemental"><code>&lt;carousel-elemental&gt;</code></a>
           from the <a href="https://stamat.github.io/book-of-elementals/">Book of Elementals</a> — same
           idea, keyboard and screen reader included. This slider has no keyboard support at all, which
@@ -115,6 +114,20 @@
           </div>
         </div>
 
+        <h2>Dynamic slides</h2>
+        <p>
+          <code>slides</code> is read once at init and never again — there is no
+          <code>refresh()</code> method. So after adding or removing a slide in the DOM you re-read
+          the list yourself and call <code>enumerateSlides()</code>, or the slider keeps navigating
+          the set it saw at startup:
+        </p>
+        <pre><code>slider.slides = Array.from(slider.track.querySelectorAll(slider.options.slideSelector))
+slider.enumerateSlides()</code></pre>
+        <p>
+          <button class="js-add-slidescroll">Add slide</button>
+          <button class="js-remove-slidescroll">Remove slide</button>
+        </p>
+
         <h2>Installation</h2>
         <p>
           There is no npm package — this was never published. Clone the repo, or copy
@@ -122,15 +135,13 @@
           imports <code>shallowMerge</code> from
           <a href="https://github.com/stamat/book-of-spells">book-of-spells</a>.
         </p>
-        <button class="js-add-slidescroll" data-index="0">Add</button>
-        <button class="js-remove-slidescroll" data-index="0">Remove</button>
       </main>
     </div>
     <script type="text/javascript">
       const slider = new Slidescroll('#slidescroll-1', {
         next: '#slider-controls-1 .js-slidescroll-next',
         prev: '#slider-controls-1 .js-slidescroll-prev',
-        infinite: true
+        loop: true
       });
 
       slider.element.addEventListener('slidescroll:change', (event) => {
@@ -141,6 +152,36 @@
         console.log('slidescroll:scrollstop', event.detail);
       });
 
+      const addButton = document.querySelector('.js-add-slidescroll');
+      const removeButton = document.querySelector('.js-remove-slidescroll');
+      const palette = ['hotpink', 'blueviolet', 'cornflowerblue', 'crimson', 'seagreen', 'darkorange', 'teal'];
+
+      // The slider caches its slide list at init, so every DOM change has to hand it a new one.
+      function refreshSlides() {
+        slider.slides = Array.from(slider.track.querySelectorAll(slider.options.slideSelector));
+        slider.enumerateSlides();
+        removeButton.disabled = slider.slides.length <= 1;
+      }
+
+      addButton.addEventListener('click', () => {
+        const slide = document.createElement('div');
+        slide.className = 'demo-slide slidescroll-slide';
+        slide.style.backgroundColor = palette[slider.slides.length % palette.length];
+        slide.textContent = slider.slides.length + 1;
+        slider.track.appendChild(slide);
+        refreshSlides();
+        slider.goTo(slider.slides.length - 1);
+      });
+
+      removeButton.addEventListener('click', () => {
+        // Removing the last remaining slide leaves goTo and the events with nothing to address.
+        if (slider.slides.length <= 1) return;
+        slider.slides[slider.slides.length - 1].remove();
+        refreshSlides();
+        slider.goTo(Math.min(slider.currentIndex, slider.slides.length - 1));
+      });
+
+      refreshSlides();
     </script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
