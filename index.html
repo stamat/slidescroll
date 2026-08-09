@@ -93,6 +93,34 @@
           is why it was replaced. Use the elemental.
         </div>
 
+        <h2>Why this one mattered</h2>
+        <p>
+          Every carousel I wrote before this one measured things.
+          <a href="https://github.com/stamat/slidekick">slidekick</a>, the 2012 version, cached slide
+          widths at init, cloned the first and last slide to fake a loop, repacked your markup into
+          generated slides, and carried a resize listener to keep all those numbers current — which,
+          it turned out, recalculated them and applied none of them.
+        </p>
+        <p>
+          slidescroll deletes the whole category of bug by refusing to own the position. The frame is
+          <code>overflow: auto</code>, the track is a flex row, the slides are
+          <code>flex: 0 0 auto</code> — that is the entire stylesheet, nineteen lines. Movement is one
+          platform call, <code>Element.scrollIntoView()</code>. There is no resize listener in the
+          source because nothing was measured for one to fix, no <code>cloneNode</code>, no injected
+          wrappers, no transforms, no animation loop. Touch, trackpad and momentum scrolling work
+          because this is a real scroll container rather than an impression of one.
+        </p>
+        <p>
+          The price of letting the scroller be the state is that, by default, it never reads that
+          state back. <code>currentIndex</code> moves only when <em>you</em> call
+          <code>goTo()</code>, so a visitor who swipes leaves it stale and the next press of Next
+          resumes from wherever the code last thought it was. <code>autoGoTo: true</code> syncs the
+          index on scroll stop, and it is off by default. That idea — the scroller is the state —
+          is the part worth keeping, and it is what carried into
+          <code>&lt;carousel-elemental&gt;</code>, which does the same thing and answers to a keyboard.
+        </p>
+
+        <h2>Demo</h2>
         <div id="slider-controls-1" class="slidescroll-controls" style="margin-bottom: 24px;">
           <button class="js-slidescroll-prev">Prev</button>
           <button class="js-slidescroll-next">Next</button>
